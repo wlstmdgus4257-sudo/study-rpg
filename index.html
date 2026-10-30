@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스터디 퀘스트</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>⚔️ 스터디 퀘스트</h1>
+      <p>공부하고, 전투하고, 성장하자!</p>
+    </div>
+    <button id="resetButton" class="reset-button">게임 초기화</button>
+  </header>
+
+  <main>
+    <section class="panel player-panel">
+      <h2>🧙 나의 모험가</h2>
+      <p id="playerLevel">레벨 1</p>
+
+      <div class="bar-label">
+        <span>경험치</span>
+        <span id="expText">0 / 100</span>
+      </div>
+      <div class="bar">
+        <div id="expBar" class="exp-fill"></div>
+      </div>
+
+      <div class="stats">
+        <div>💰 코인 <strong id="coins">0</strong></div>
+        <div>🏆 처치 <strong id="kills">0</strong></div>
+      </div>
+    </section>
+
+    <section class="panel battle-panel">
+      <h2>⚔️ 몬스터 전투</h2>
+
+      <div class="battle-scene">
+        <div class="fighter">
+          <div class="sprite">🧙</div>
+          <strong>모험가</strong>
+        </div>
+
+        <div class="versus">VS</div>
+
+        <div class="fighter">
+          <div id="monsterSprite" class="sprite">🟢</div>
+          <strong id="monsterName">초록 슬라임</strong>
+          <div class="bar monster-bar">
+            <div id="monsterBar" class="monster-fill"></div>
+          </div>
+          <small id="monsterHP">50 / 50 HP</small>
+        </div>
+      </div>
+
+      <p id="battleMessage" class="message" aria-live="polite">
+        문제를 풀어 몬스터를 공격하자!
+      </p>
+
+      <div id="quizArea">
+        <h3 id="questionText">문제가 여기에 표시됩니다.</h3>
+        <div id="answerArea"></div>
+        <button id="submitAnswer" class="primary-button">
+          정답 제출
+        </button>
+      </div>
+
+      <button id="nextBattle" class="primary-button" hidden>
+        다음 몬스터 도전
+      </button>
+    </section>
+
+    <section class="panel">
+      <h2>📚 나만의 문제 등록</h2>
+
+      <form id="questionForm">
+        <label for="subject">과목</label>
+        <input id="subject" type="text"
+          placeholder="예: C언어" required maxlength="30">
+
+        <label for="questionInput">문제</label>
+        <textarea id="questionInput"
+          placeholder="예: 정수를 출력하는 서식 지정자는?"
+          required maxlength="500"></textarea>
+
+        <label for="answerInput">정답</label>
+        <input id="answerInput" type="text"
+          placeholder="예: %d" required maxlength="200">
+
+        <label for="explanationInput">해설 (선택)</label>
+        <textarea id="explanationInput"
+          placeholder="예: %d는 정수형 데이터를 출력한다."
+          maxlength="500"></textarea>
+
+        <button class="primary-button" type="submit">
+          문제 등록하기
+        </button>
+      </form>
+
+      <p id="questionCount">등록된 문제: 0개</p>
+      <div id="questionList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>STUDY QUEST · 나만의 공부 RPG</p>
+  </footer>
+</body>
+</html>
