@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0e20">
+  <title>STUDY QUEST · Academy Dungeon</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="question-bank.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="background-grid" aria-hidden="true"></div>
+  <div class="glow glow-left" aria-hidden="true"></div><div class="glow glow-right" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-cluster">
+        <div class="brand-icon" aria-hidden="true">✦</div>
+        <div><div class="brand-line"><span>STUDY</span> <em>QUEST</em><small>II</small></div><p>ACADEMY DUNGEON <span class="dot-separator">✦</span> 공부가 모험이 되는 곳</p></div>
+      </div>
+      <div class="header-actions">
+        <span class="offline-chip"><span class="pulse-dot"></span> OFFLINE MODE</span>
+        <button id="soundBtn" class="icon-button" type="button" aria-label="효과음 켜기" title="효과음 켜기">♪ <span id="soundState">OFF</span></button>
+      </div>
+    </header>
+
+    <div class="dashboard">
+      <aside class="left-rail">
+        <section class="card hero-card">
+          <div class="section-kicker"><span>01 / HERO PROFILE</span><span class="decoration">✧</span></div>
+          <div class="profile-row">
+            <div class="avatar-frame"><span class="avatar-emoji">🧙‍♂️</span><span class="avatar-star">✦</span></div>
+            <div><p class="subtle-label">YOUR CHARACTER</p><h2>학습 모험가</h2><p class="rank" id="rankText">NOVICE SCHOLAR</p></div>
+          </div>
+          <div class="lv-strip"><span class="level-chip">LV. <strong id="levelText">01</strong></span><span class="small-muted" id="levelTitle">견습 학자</span></div>
+          <div class="meter-caption"><span><span class="meter-icon">◆</span> EXP</span><b id="xpText">0 / 100</b></div>
+          <div class="progress-rail xp-rail"><div id="xpFill" class="progress-value xp-value"></div></div>
+          <div class="meter-caption hp-caption"><span><span class="meter-icon hp">♥</span> ENERGY</span><b id="heroHpText">100 / 100</b></div>
+          <div class="progress-rail hp-rail"><div id="heroHpFill" class="progress-value hero-hp-value"></div></div>
+          <div class="stat-pair">
+            <div class="stat-tile"><span class="stat-symbol">✧</span><div><small>GOLD</small><strong id="coinText">0</strong></div></div>
+            <div class="stat-tile"><span class="stat-symbol">⚔</span><div><small>DEFEATED</small><strong id="killText">0</strong></div></div>
+          </div>
+          <div class="daily-hint"><span>✦</span> 정답을 맞혀 경험치를 모으고 더 강해지자.</div>
+        </section>
+        <section class="card quest-card">
+          <div class="section-kicker">02 / QUEST ARCHIVE</div>
+          <div class="section-title-row"><h2>퀘스트 선택</h2><span class="count-label">10 QUESTIONS</span></div>
+          <p class="muted">강의 자료를 바탕으로 만든 문제를 바로 플레이할 수 있어.</p>
+          <button id="coreBtn" class="pack-option is-active" type="button" aria-pressed="true">
+            <span class="pack-symbol lavender">◈</span>
+            <span class="pack-copy"><strong>컴퓨터구조 · 핵심편</strong><small>개념 + 상황형 · 10문제</small></span>
+            <span class="pack-chevron">↗</span>
+          </button>
+          <button id="advancedBtn" class="pack-option" type="button" aria-pressed="false">
+            <span class="pack-symbol blue">✦</span>
+            <span class="pack-copy"><strong>컴퓨터구조 · 응용편</strong><small>계산 + 명령어 · 10문제</small></span>
+            <span class="pack-chevron">↗</span>
+          </button>
+          <div class="divider-line"></div>
+          <details class="import-section" id="importDetails">
+            <summary><span>＋ 내 문제 불러오기</span><span class="summary-sub">JSON 파일 / 붙여넣기</span></summary>
+            <div class="import-inner">
+              <label for="jsonFile" class="file-picker">⬆ JSON 파일 선택 <span>.json</span></label>
+              <input id="jsonFile" type="file" accept=".json,application/json" hidden>
+              <label class="tiny-label" for="jsonPaste">또는 JSON 텍스트 붙여넣기</label>
+              <textarea id="jsonPaste" rows="4" spellcheck="false" placeholder='{"title":"나의 학습","questions":[...]}'></textarea>
+              <button id="pasteBtn" type="button" class="outline-button">붙여넣은 문제로 시작 ↗</button>
+            </div>
+          </details>
+          <div id="importStatus" class="import-status" aria-live="polite">PDF는 채팅에 업로드해서 문제 JSON을 받아 넣으면 돼.</div>
+        </section>
+      </aside>
+
+      <main class="center-stage">
+        <section class="card battlefield">
+          <div class="battle-header"><div><div class="section-kicker">03 / BATTLE ZONE</div><h2>지식의 던전 <span class="battle-level">/ FLOOR <span id="floorText">01</span></span></h2></div><span class="live-chip"><span></span> <span id="modeText">BATTLE READY</span></span></div>
+          <div class="battle-scene" id="battleScene">
+            <div class="star-field" aria-hidden="true">✦ <span>✧</span> ✦ <span>✧</span> ✦</div>
+            <div class="scene-horizon" aria-hidden="true"></div>
+            <div class="scene-character hero-scene" id="heroScene"><div class="scene-shadow"></div><div class="hero-sprite" role="img" aria-label="움직이는 마법사"><span class="hero-face">🧙‍♂️</span></div><div class="character-label">YOU</div></div>
+            <div class="battle-symbol" aria-hidden="true">⚡</div>
+            <div class="scene-character monster-scene" id="monsterScene">
+              <div class="scene-shadow"></div>
+              <svg class="monster-art" viewBox="0 0 260 230" role="img" aria-labelledby="monsterSvgTitle">
+                <title id="monsterSvgTitle">둥근 슬라임 몬스터</title>
+                <defs>
+                  <linearGradient id="slimeColor" x1=".2" y1="0" x2=".8" y2="1"><stop id="monsterColor1" offset="0" stop-color="#b2f8d4"/><stop id="monsterColor2" offset="1" stop-color="#31bf98"/></linearGradient>
+                  <radialGradient id="highlight"><stop offset="0" stop-color="#fff" stop-opacity=".68"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                  <filter id="dropGlow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <path d="M132 25 C174 24 211 65 221 118 C232 171 216 202 177 207 C149 213 116 207 91 211 C47 210 31 184 39 141 C44 100 84 31 132 25Z" fill="url(#slimeColor)" stroke="#fff" stroke-opacity=".36" stroke-width="4"/>
+                <ellipse cx="94" cy="83" rx="40" ry="29" fill="url(#highlight)" transform="rotate(-30 94 83)"/>
+                <ellipse cx="99" cy="130" rx="11" ry="15" fill="#16213a"/><ellipse cx="166" cy="130" rx="11" ry="15" fill="#16213a"/>
+                <circle cx="103" cy="125" r="3" fill="#fff"/><circle cx="170" cy="125" r="3" fill="#fff"/>
+                <path d="M119 164 Q132 177 146 163" stroke="#17403e" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <circle cx="75" cy="151" r="11" fill="#ffb5cb" opacity=".37"/><circle cx="185" cy="151" r="11" fill="#ffb5cb" opacity=".37"/>
+              </svg>
+              <div class="character-label enemy-label">ENEMY</div>
+              <div class="damage-pop" id="damagePop" aria-hidden="true">−30</div>
+            </div>
+            <div id="attackBurst" class="attack-burst" aria-hidden="true">✦</div>
+            <div class="battle-ground" aria-hidden="true"></div>
+          </div>
+          <div class="movement-toolbar" aria-label="캐릭터 이동 기능">
+            <div class="movement-instructions"><strong><span class="walking-dot">●</span> FREE MOVE</strong><span>방향키 또는 WASD로 캐릭터 이동 · 정답 시 자동 돌진 공격</span></div>
+            <div class="movement-pad" aria-label="화면 이동 버튼">
+              <button type="button" class="movement-button" data-move="left" aria-label="캐릭터 왼쪽으로 이동" title="왼쪽 이동">←</button>
+              <button type="button" class="movement-button" data-move="up" aria-label="캐릭터 위로 이동" title="위로 이동">↑</button>
+              <button type="button" class="movement-button" data-move="down" aria-label="캐릭터 아래로 이동" title="아래로 이동">↓</button>
+              <button type="button" class="movement-button" data-move="right" aria-label="캐릭터 오른쪽으로 이동" title="오른쪽 이동">→</button>
+            </div>
+          </div>
+          <div class="enemy-strip"><div class="enemy-name"><span class="enemy-level" id="enemyLevel">LV.01</span><strong id="monsterName">도서관 슬라임</strong></div><div class="enemy-hp-info"><span>ENEMY HP</span><b id="monsterHpText">60 / 60</b></div></div>
+          <div class="progress-rail enemy-hp-rail"><div id="monsterHpFill" class="progress-value enemy-hp-value"></div></div>
+          <div id="battleCaption" class="battle-caption"><span>⚔</span> 문제를 맞히면 스킬이 발동해!</div>
+        </section>
+
+        <section class="card question-card" id="questionCard">
+          <div class="question-topline"><div class="section-kicker">04 / KNOWLEDGE TRIAL</div><span class="source-chip" id="sourceChip">교재 5쪽</span></div>
+          <div class="quiz-progress-row"><span><strong id="questionNumber">01</strong> <span class="muted">/ 10</span> <span class="question-progress-text">QUESTIONS</span></span><div class="small-progress"><div id="questionProgressFill"></div></div><span id="comboChip" class="combo-chip">COMBO ×0</span></div>
+          <div class="topic-row"><span id="topicText" class="topic-pill">MUX·DEMUX</span><span id="skillText" class="skill-pill">실전 적용</span></div>
+          <h2 id="questionText" class="question-text">컴퓨터구조 학습 퀘스트에 도전해 봐!</h2>
+          <div id="optionList" class="option-list" aria-label="정답 선택"></div>
+          <div class="quiz-controls"><button id="hintBtn" type="button" class="hint-button">✧ 힌트 보기</button><span class="key-guide">키보드 <kbd>1</kbd>~<kbd>4</kbd> 선택</span></div>
+          <div id="hintBox" class="hint-box" hidden></div>
+          <div id="feedbackBox" class="feedback-box" aria-live="polite" hidden></div>
+          <button id="nextBtn" class="primary-button next-button" type="button" disabled>다음 문제 <span>→</span></button>
+        </section>
+      </main>
+
+      <aside class="right-rail">
+        <section class="card mission-card">
+          <div class="section-kicker">05 / MISSION CONTROL</div>
+          <h2>오늘의 도전</h2>
+          <p class="muted">학습 자료를 퀘스트로 바꾸는 중</p>
+          <div class="mission-stat"><div class="mission-big"><strong id="missionProgress">0</strong><span> / 10</span></div><div class="mission-description">완료한 문제</div></div>
+          <div class="mission-ring-wrap"><svg class="mission-ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="48" class="ring-track"/><circle cx="60" cy="60" r="48" class="ring-value" id="missionCircle"/></svg><div class="ring-center"><strong id="missionPercent">0%</strong><small>COMPLETE</small></div></div>
+          <div class="mission-grid"><div><span>정답률</span><strong id="accuracyText">—</strong></div><div><span>최대 콤보</span><strong id="bestComboText">0</strong></div></div>
+        </section>
+        <section class="card log-card"><div class="section-kicker">06 / BATTLE LOG</div><h2>전투 기록</h2><div id="battleLog" class="battle-log"><div class="log-empty">퀘스트가 시작되면 기록이 남아.</div></div></section>
+        <section class="card review-card"><div class="review-heading"><div><div class="section-kicker">07 / REVIEW NOTES</div><h2>오답 노트</h2></div><span id="wrongBadge" class="wrong-pill">0</span></div><p class="muted">틀린 문제의 이유까지 확인하고 다시 도전해 봐.</p><div id="wrongList" class="wrong-list"><div class="review-empty">✧ 아직 오답이 없어.</div></div><button id="reviewBtn" type="button" class="outline-button review-start" disabled>오답 다시 풀기 <span>↗</span></button></section>
+        <button id="resetBtn" type="button" class="reset-button">↺ 모든 게임 기록 초기화</button>
+      </aside>
+    </div>
+    <footer class="footer"><span>STUDY QUEST II · ACADEMY DUNGEON</span><span>서버 없음 · API 키 없음 · 브라우저에 자동 저장</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-layer" id="summaryModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+      <div class="modal-stars">✦ ✧ ✦</div><div class="modal-trophy">🏆</div>
+      <p class="section-kicker">QUEST CLEARED</p><h2 id="summaryTitle">던전 클리어!</h2><p id="summarySubtitle">오늘도 한 단계 성장했어.</p>
+      <div class="result-stats"><div><span>정답</span><strong id="resultScore">0 / 10</strong></div><div><span>정답률</span><strong id="resultAccuracy">0%</strong></div><div><span>몬스터 처치</span><strong id="resultKills">0</strong></div></div>
+      <button id="modalReviewBtn" class="primary-button" type="button">오답 복습 시작 →</button>
+      <button id="modalCloseBtn" class="modal-close" type="button">결과 확인하고 닫기</button>
+    </div>
+  </div>
+</body>
+</html>
