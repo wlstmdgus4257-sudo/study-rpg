@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>STUDY QUEST — 공부하고 레벨업!</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <div class="page">
+    <header class="header">
+      <div class="logo-badge" aria-hidden="true">⚔️</div>
+      <div class="brand">
+        <div class="overline">YOUR STUDY. YOUR ADVENTURE.</div>
+        <h1>STUDY <span>QUEST</span></h1>
+        <p>공부할수록 강해지는 나만의 RPG</p>
+      </div>
+      <div class="offline"><span class="online-dot"></span> API 키 불필요 <span class="offline-small">· 오프라인 실행</span></div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section class="panel setup">
+          <div class="panel-label"><span>01 / QUEST SETUP</span><span class="pill">시작하기</span></div>
+          <h2>문제 가져오기</h2>
+          <p class="helper">PDF는 <strong>ChatGPT 채팅에 업로드</strong>해서 문제를 만들어 줘. 받은 JSON을 이 게임에 넣으면 돼!</p>
+          <div class="instruction-steps">
+            <div><b>1</b><span>PDF를 ChatGPT에 올리기</span></div>
+            <div><b>2</b><span>객관식 10문제 JSON 받기</span></div>
+            <div><b>3</b><span>JSON 파일 선택 또는 붙여넣기</span></div>
+          </div>
+          <label class="upload-label" for="jsonFile"><span class="upload-icon">📦</span><strong>문제 JSON 파일 선택</strong><small>클릭해서 .json 파일 불러오기</small></label>
+          <input type="file" id="jsonFile" accept=".json,application/json" />
+          <div class="or"><span>또는</span></div>
+          <label class="field-label" for="jsonPaste">문제 JSON 붙여넣기</label>
+          <textarea id="jsonPaste" rows="4" placeholder='{"title":"내 공부 자료","questions":[...]}' spellcheck="false"></textarea>
+          <button class="btn btn-primary btn-wide" id="loadPasteBtn" type="button">✨ 붙여넣은 문제로 시작</button>
+          <button class="btn btn-subtle btn-wide" id="demoBtn" type="button">🎮 예시 문제 10개로 체험</button>
+          <div id="importStatus" class="import-status" role="status" aria-live="polite">먼저 예시 문제로 테스트해 봐도 돼.</div>
+        </section>
+
+        <section class="panel stats">
+          <div class="panel-label">02 / HERO STATUS</div>
+          <div class="hero-line"><div class="hero-avatar">🧙</div><div><small>나의 모험가</small><h2>Lv. <span id="level">1</span> <span class="hero-title">학습 견습생</span></h2></div></div>
+          <div class="bar-caption"><span>EXP</span><strong id="xpLabel">0 / 100</strong></div>
+          <div class="bar track"><div class="fill exp-fill" id="xpFill"></div></div>
+          <div class="stat-grid"><div><span>🪙 코인</span><strong id="coins">0</strong></div><div><span>🏆 처치</span><strong id="kills">0</strong></div><div><span>🎯 정답</span><strong id="correctTotal">0</strong></div></div>
+          <button class="btn btn-ghost btn-wide" id="resetBtn" type="button">↻ 전체 게임 초기화</button>
+        </section>
+      </aside>
+
+      <div class="main-content">
+        <section class="panel battle">
+          <div class="panel-label"><span>03 / BATTLE ARENA</span><span class="pill pill-purple" id="modePill">전투 준비</span></div>
+          <div class="battle-heading"><div><h2>지식의 던전</h2><p>정답을 맞히면 몬스터에게 25 데미지!</p></div><div class="quest-count" id="questCount">0 / 10</div></div>
+          <div class="arena">
+            <div class="sparkle sparkle-1">✦</div><div class="sparkle sparkle-2">✧</div><div class="sparkle sparkle-3">✦</div>
+            <div class="monster-shadow"></div><div class="monster-emoji" id="monsterEmoji" aria-hidden="true">👾</div>
+            <h3 id="monsterName">대기 중인 몬스터</h3>
+            <div class="monster-hp-caption"><span>❤️ MONSTER HP</span><strong id="monsterHpLabel">50 / 50</strong></div>
+            <div class="bar monster-hp"><div class="fill hp-fill" id="monsterHpFill"></div></div>
+            <p class="arena-hint" id="arenaHint">예시 문제나 JSON 파일을 불러오면 전투가 시작돼.</p>
+          </div>
+          <div class="quiz">
+            <div class="quiz-top"><span id="questionTag">QUEST READY</span><span class="difficulty">★ 난이도: 쉬움</span></div>
+            <div class="progress-track"><div id="questionProgress" class="progress-fill"></div></div>
+            <h3 id="questionText">문제를 불러오고 첫 전투를 시작해 봐!</h3>
+            <div id="options" class="options"></div>
+            <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+            <button class="btn btn-primary btn-wide next-btn" type="button" id="nextBtn" disabled>다음 문제 →</button>
+          </div>
+        </section>
+
+        <section class="panel review">
+          <div class="review-head"><div><div class="panel-label">04 / REVIEW JOURNAL</div><h2>📕 오답 노트</h2><p>틀린 문제를 저장하고 다시 풀어 봐.</p></div><span class="wrong-badge" id="wrongCount">0문제</span></div>
+          <div id="wrongList" class="wrong-list"><div class="empty">아직 틀린 문제가 없어. 퀘스트를 시작해 봐!</div></div>
+          <button class="btn btn-secondary btn-wide" id="reviewBtn" type="button" disabled>오답 다시 풀기 ↗</button>
+        </section>
+      </div>
+    </main>
+    <footer>STUDY QUEST · 별도 서버, API 키, 결제 없이 실행 가능 · 진행 상황은 현재 브라우저에 저장돼.</footer>
+  </div>
+</body>
+</html>
